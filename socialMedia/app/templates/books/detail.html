@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - Echoes of Wisdom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../static/css/main.css">
+    <style>
+        :root {
+            --parchment: #fafafa;
+            --ink-dark: #1a1a1a;
+            --ink-medium: #6b7280;
+            --gold-accent: #f59e0b;
+            --gold-light: #fbbf24;
+            --shadow-deep: rgba(0, 0, 0, 0.12);
+            --shadow-soft: rgba(0, 0, 0, 0.04);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+
+            /* Professional Color Palette */
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100% 100%);
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --surface: #ffffff;
+            --surface-dark: #f8fafc;
+            --border: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+              --custom-radiant-dark :linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        [data-theme="dark"] {
+            --surface: #0f172a;
+            --surface-dark: #1e293b;
+            --border: #334155;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --custom-radiant-dark:linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--custom-radiant-dark);
+            min-height: 100vh;
+            color: var(----text-primary);
+        }
+
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-dark);
+            border-color: var(--primary);
+        }
+
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .nav-hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .nav-hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 70px;
+            right: -100%;
+            width: 300px;
+            height: calc(100vh - 70px);
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 999;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-sidebar.active {
+            right: 0;
+        }
+
+        .mobile-nav-menu {
+            padding: 20px;
+            list-style: none;
+        }
+
+        .mobile-nav-item {
+            margin-bottom: 16px;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover {
+            background: var(--surface-dark);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Book Info Section */
+        .book-info {
+            background: var(--surface);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            background: rgba(107, 114, 128, 0.1);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(107, 114, 128, 0.2);
+            transform: translateX(-2px);
+        }
+
+        .book-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .book-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .book-description {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .quote-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        /* Purchase Panel */
+        .purchase-panel {
+            background: var(--surface-dark);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 120px;
+        }
+
+        .purchase-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .price-display {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+        }
+
+        .price-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Quantity Controls */
+        .quantity-section {
+            margin-bottom: 2rem;
+        }
+
+        .quantity-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: var(--surface-dark);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #667eea;
+            background: var(--surface-dark);
+            border-radius: 50%;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quantity-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            min-width: 50px;
+            text-align: center;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        /* Total Display */
+        .total-display {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--surface-dark);
+
+            border-radius: 12px;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .total-label {
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .total-amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface-dark);
+
+            color: var(--text-primary);
+
+            border: 2px solid rgba(107, 114, 128, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Checkout Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .payment-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(229, 231, 235, 0.8);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .payment-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 12px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transform: translateX(400px);
+            transition: all 0.4s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+
+            .book-info,
+            .purchase-panel {
+                padding: 2rem;
+            }
+
+            .book-title {
+                font-size: 2rem;
+            }
+
+            .price-amount {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Echoes of Wisdom</a>
+
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}" class="nav-link active">Home</a></li>
+                <li><a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a></li>
+                <li><a href="{% url 'library' %}" class="nav-link">Library</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </button>
+                </li>
+                <li><a href="#" class="nav-link">Logout</a></li>
+            </ul>
+
+            <div class="nav-hamburger" onclick="toggleMobileNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <ul class="mobile-nav-menu">
+            <li class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">
+                    <i class="fas fa-heart"></i> Wishlist
+                </a>
+            </li>
+            <li class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">
+                    <i class="fas fa-book"></i> Library
+                </a>
+            </li>
+            <li class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link" onclick="toggleTheme()">
+                    <i class="fas fa-sun" id="mobile-theme-icon"></i> Theme
+                </a>
+            </li>
+            <li class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Book Information -->
+        <div class="book-info">
+            <nav class="back-nav">
+                <a href="#" class="back-link" onclick="history.back(); return false">
+                    ← Back to Collection
+                </a>
+            </nav>
+
+            <h1 class="book-title">{{product.name}}</h1>
+
+            <div class="book-meta">
+                <span class="meta-tag">Author: {{product.author}}</span>
+                <span class="meta-tag">{{product.genre}}</span>
+            </div>
+
+            <div class="book-description">
+                {{product.desc}}
+
+                <br><br>
+
+                Drawing from the greatest philosophical traditions, this book offers practical guidance for navigating
+                life's challenges with grace and wisdom. Each chapter unveils powerful principles that have guided
+                humanity's greatest thinkers throughout history.
+            </div>
+
+            <div class="quote-section">
+                <div class="quote-text">
+                    "{{product.quotes}}"
+                </div>
+                <div class="quote-author">— {{product.author}}</div>
+            </div>
+
+            <div class="book-description">
+                {{product.desc}}
+            </div>
+
+            <input type="hidden" id="product_id" value="{{product.id}}">
+        </div>
+
+        <!-- Purchase Panel -->
+        <div class="purchase-panel">
+            <h2 class="purchase-title">Acquire This Wisdom</h2>
+
+            <div class="price-display">
+                <div class="price-amount" id="price-amount">${{product.price}}</div>
+                <div class="price-label">per volume</div>
+            </div>
+
+            <div class="quantity-section">
+                <div class="quantity-label">Quantity</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" id="decreaseBtn">−</button>
+                    <div class="quantity-display" id="quantityDisplay">1</div>
+                    <button class="quantity-btn" id="increaseBtn">+</button>
+                </div>
+            </div>
+
+            <div class="total-display">
+                <div class="total-label">Total Amount</div>
+                <div class="total-amount" id="totalAmount">$24.99</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="saveBtn">Save for Later</button>
+                <button class="btn btn-primary" id="purchaseBtn">Purchase Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <h2>Secure Payment</h2>
+
+            <!-- Card Details via Stripe Elements -->
+            <label>Card Details</label>
+            <div id="card-element" class="stripe-card-input"></div>
+
+            <!-- Cardholder Name -->
+            <label>Cardholder Name</label>
+            <input type="text" class="form-input" id="cardholderName" placeholder="Full Name">
+
+            <div id="paymentMessage" class="payment-message"></div>
+
+            <button id="confirmPayment">Confirm Payment</button>
+            <button id="closeModal">Cancel</button>
+        </div>
+    </div>
+
+
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
+                mobileThemeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+                mobileThemeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+
+        if (!"{{ STRIPE_PUBLISHABLE_KEY }}") {
+            console.error("Missing Stripe Publishable Key");
+        }
+
+        const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+        const elements = stripe.elements();
+        const card = elements.create("card");
+        card.mount("#card-element");
+
+        let quantity = 1;
+        const basePrice = parseFloat('{{product.price}}');
+
+        const quantityDisplay = document.getElementById('quantityDisplay');
+        const totalAmount = document.getElementById('totalAmount');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const purchaseBtn = document.getElementById('purchaseBtn');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const closeModal = document.getElementById('closeModal');
+        const confirmPayment = document.getElementById('confirmPayment');
+        const paymentMessage = document.getElementById('paymentMessage');
+        const notification = document.getElementById('notification');
+
+        function updateDisplay() {
+            quantityDisplay.textContent = quantity;
+            totalAmount.textContent = `$${(quantity * basePrice).toFixed(2)}`;
+            decreaseBtn.disabled = quantity <= 1;
+            increaseBtn.disabled = quantity >= 99;
+        }
+
+        function showNotification(message, isSuccess = true) {
+            notification.textContent = message;
+            notification.style.background = isSuccess
+                ? 'linear-gradient(135deg, #10b981, #059669)'
+                : 'linear-gradient(135deg, #ef4444, #dc2626)';
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showPaymentMessage(message, isSuccess = false) {
+            paymentMessage.textContent = message;
+            paymentMessage.className = `payment-message ${isSuccess ? 'success-message' : 'error-message'}`;
+            paymentMessage.style.display = 'block';
+        }
+
+        // Quantity controls
+        decreaseBtn.addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                updateDisplay();
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            if (quantity < 99) {
+                quantity++;
+                updateDisplay();
+            }
+        });
+
+        // Save for later
+        saveBtn.addEventListener('click', () => {
+            showNotification('Book saved to your reading list!');
+            fetch('http://127.0.0.1:8000/save/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: document.getElementById('product_id').value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.status == 401) {
+                        window.location.href = '/login/';
+                    }
+                })
+                .catch(error => console.error("Save error:", error));
+        });
+
+        // Open checkout modal
+        purchaseBtn.addEventListener('click', () => {
+            checkoutModal.style.display = 'flex';
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            checkoutModal.style.display = 'none';
+            paymentMessage.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        checkoutModal.addEventListener('click', (e) => {
+            if (e.target === checkoutModal) {
+                checkoutModal.style.display = 'none';
+                paymentMessage.style.display = 'none';
+            }
+        });
+
+        // Confirm payment via Stripe
+        confirmPayment.addEventListener('click', () => {
+            const cardholderName = document.getElementById('cardholderName').value.trim();
+            if (!cardholderName) {
+                showPaymentMessage('Please enter cardholder name');
+                return;
+            }
+
+            confirmPayment.textContent = 'Processing...';
+            confirmPayment.disabled = true;
+
+            fetch("/create-payment-intent/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: quantity * basePrice * 100 })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.clientSecret) throw new Error("Invalid payment intent response");
+                    return stripe.confirmCardPayment(data.clientSecret, {
+                        payment_method: {
+                            card: card,
+                            billing_details: { name: cardholderName }
+                        }
+                    });
+                })
+                .then(result => {
+                    if (result.error) {
+                        showPaymentMessage(result.error.message);
+                    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+                        showPaymentMessage("✅ Payment Successful!", true);
+
+                        // Save order to backend
+                        return fetch('http://127.0.0.1:8000/save_order/', {
+                            method: "POST",
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                'product_id': "{{ product.id }}",
+                                'quantity': quantity
+                            })
+                        })
+                            .then(() => {
+                                showNotification('Thank you for your purchase!');
+                                setTimeout(() => {
+                                    checkoutModal.style.display = 'none';
+                                    paymentMessage.style.display = 'none';
+                                    confirmPayment.textContent = 'Confirm Payment';
+                                    confirmPayment.disabled = false;
+                                }, 2000);
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error("Payment error:", error);
+                    showPaymentMessage("Error: " + error.message);
+                })
+                .finally(() => {
+                    confirmPayment.textContent = 'Confirm Payment';
+                    confirmPayment.disabled = false;
+                });
+        });
+
+        updateDisplay();
+    </script>
+
+</body>
+
+</html>

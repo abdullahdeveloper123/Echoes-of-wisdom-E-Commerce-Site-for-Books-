@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echoes of Wisdom - Professional Quotes Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <link rel="stylesheet" href="../../../static/css/main.css">
+</head>
+
+<body data-theme="light">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">Echoes of Wisdom</a>
+
+      <ul class="nav-menu">
+        <li><a href="{% url 'home' %}" class="nav-link active">Home</a></li>
+        <li><a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a></li>
+        <li><a href="{% url 'library' %}" class="nav-link">Library</a></li>
+        <li>
+          <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fas fa-sun" id="theme-icon"></i>
+          </button>
+        </li>
+        <li><a href="#" class="nav-link">Logout</a></li>
+      </ul>
+
+      <div class="nav-hamburger" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobile-sidebar">
+    <ul class="mobile-nav-menu">
+      <li class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link">
+          <i class="fas fa-home"></i> Home
+        </a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link">
+          <i class="fas fa-heart"></i> Wishlist
+        </a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link">
+          <i class="fas fa-book"></i> Library
+        </a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link" onclick="toggleTheme()">
+          <i class="fas fa-sun" id="mobile-theme-icon"></i> Theme
+        </a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-wrapper">
+
+      <div class="hero-content">
+        <h1 class="hero-title">Discover Wisdom That Transforms</h1>
+        <p class="hero-subtitle">Curated quotes from the world's greatest minds to inspire your journey</p>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">{{ total }}</span>
+            <span class="stat-label">Quotes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Authors</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Categories</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Quotes Carousel -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2 class="section-title">Featured Quotes</h2>
+      <p class="section-subtitle">Handpicked wisdom to inspire and motivate</p>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-track" id="carousel-track">
+        <div class="carousel-slide">
+          <div class="featured-quote">
+            <p class="quote-text">"The only way to do great work is to love what you do."</p>
+            <p class="quote-author">— Steve Jobs</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <div class="featured-quote">
+            <p class="quote-text">"In the middle of difficulty lies opportunity."</p>
+            <p class="quote-author">— Albert Einstein</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <div class="featured-quote">
+            <p class="quote-text">"Life is what happens to you while you're busy making other plans."</p>
+            <p class="quote-author">— John Lennon</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="previousSlide()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn" onclick="nextSlide()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="carousel-dots">
+        <span class="carousel-dot active" onclick="currentSlide(1)"></span>
+        <span class="carousel-dot" onclick="currentSlide(2)"></span>
+        <span class="carousel-dot" onclick="currentSlide(3)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <div class="manuscript-container">
+      <div class="quotes-grid" id="quotes-collection">
+        {% for quote in page_obj %}
+        <a href="http://127.0.0.1:8000/details/{{quote.id}}" class="quote-card">
+          <div class="quote-content">{{ quote.name }}</div>
+          <div class="author_name">— {{ quote.author }}</div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <nav class="pagination-scroll">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="page-nav">
+          <i class="fas fa-chevron-left"></i> Previous
+        </a>
+        {% endif %}
+
+        <span class="page-indicator">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="page-nav">
+          Next <i class="fas fa-chevron-right"></i>
+        </a>
+        {% endif %}
+      </nav>
+    </div>
+
+    <div class="search-container">
+      <div class="search-panel">
+        <h2 class="search-title">Search Quotes</h2>
+        <p class="search-subtitle">Find wisdom by author or content</p>
+
+        <input type="text" name="query" class="search-input" placeholder="Search quotes and authors..."
+          id="search_input">
+        <button type="submit" class="search-button" onclick="search()">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Echoes of Wisdom</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Discover timeless wisdom from the world's greatest
+          minds. Transform your thinking, inspire your journey.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/devuraDigitalsSolutions" class="social-link">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/abdullah-hussain-194796357/" class="social-link">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/main/home">Home</a></li>
+          <li><a href="/wishlist/wishlist">Wishlist</a></li>
+          <li><a href="/main/library">Library</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; Design and Developed by Abdullah with ♥.</p>
+    </div>
+  </footer>
+
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>
