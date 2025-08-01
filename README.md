@@ -34,33 +34,6 @@ A modern, secure, and responsive full-stack web application to browse, search, a
 
 ---
 
-## 📦 Installation
-
-```bash
-git clone https://github.com/your-username/bookstore-app.git
-cd bookstore-app
-```
-
-### Backend Setup (Django):
-
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
-
-### Frontend Setup:
-
-```bash
-cd frontend
-# Open index.html directly in browser or use Live Server extension
-```
-
----
-
 ## 💡 Motivation
 
 This app was built to sharpen full-stack development skills, focusing on building a secure, scalable, and user-friendly product from scratch — covering everything from API design and caching to secure payments and responsive UI.
